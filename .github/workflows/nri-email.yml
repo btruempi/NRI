@@ -1,0 +1,62 @@
+name: NRI intraday alerts + daily digest
+
+# TWO cron entries:
+#
+#   1. */15 13-20 * * 1-5   → every 15 minutes during US market hours
+#      (13:00-20:59 UTC weekdays, which covers 9:30 AM - 4:00 PM ET across
+#      both EDT and EST — Yahoo publishes bars during this whole window).
+#      This is the intraday alert loop: the Python script pulls fresh
+#      5-minute Yahoo bars, overlays them on daily history, and fires any
+#      newly-triggered alert rules. Digest cadence is checked but skipped
+#      here unless the daily 08:00 UTC run has already handled today.
+#
+#   2. 0 8 * * *            → once a day at 08:00 UTC (~4 AM ET / 1 AM PT).
+#      This is the "digest" run — sends the catalyst / pre-IPO / market
+#      summary email if today matches your cadence.
+#
+# Every run also evaluates alerts. State is committed back to the repo
+# so alerts don't re-fire on the same bar.
+#
+# Cost math (approx): 8 hours × 4 runs/hour × 5 weekdays × 4.3 weeks/mo
+#   = ~700 intraday runs per month, ~30 sec each = ~350 minutes.
+# Public repos: free unlimited Actions minutes.
+# Private repos on free tier: 2000 min/mo — you'll use ~18%.
+on:
+  schedule:
+    - cron: '*/15 13-20 * * 1-5'
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Cancel superseded intraday runs if a new one starts before the previous
+# finishes — prevents backlog piling up if Yahoo is slow.
+concurrency:
+  group: nri-alerts
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Evaluate alerts + send digest
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python scripts/maybe_send_email.py
+
+      - name: Commit alert state
+        run: |
+          if [ -n "$(git status --porcelain data/)" ]; then
+            git config user.name  "nri-bot"
+            git config user.email "nri-bot@users.noreply.github.com"
+            git add data/alerts.json data/alerts_state.json 2>/dev/null || true
+            git commit -m "chore(nri): update alert state [skip ci]" || true
+            git push || true
+          else
+            echo "No state changes to commit."
+          fi
