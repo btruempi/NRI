@@ -3,9 +3,9 @@
 A single-file, browser-based research dashboard for nuclear-energy equities
 — extended into a multi-vertical watchlist and alerts platform.
 
-**Live site:** `https://<your-username>.github.io/<your-repo>/Nuclear-Renaissance-Index.html`
-**How it stays up to date:** GitHub Actions runs a scheduled Python job in
-this repo that pulls fresh prices, evaluates your alerts, and emails you.
+**Live site:** `https://<your-username>.github.io/<your-repo>/`
+
+Emails, alerts, and scheduled digests run in this repo's GitHub Actions.
 
 ---
 
@@ -13,66 +13,57 @@ this repo that pulls fresh prices, evaluates your alerts, and emails you.
 
 | Tab | What it does |
 |---|---|
-| **Dashboard** | Composite index chart + top movers + benchmarks (S&P 500, uranium ETF, nuclear ETF). Live-updates every 5 minutes while the tab is open. |
-| **Watchlists** | Named baskets for any vertical. Ships with one-click preset clones: Semiconductors, Defense & Aerospace, AI Infrastructure, Uranium & Fuel, Biotech, Clean Energy, Fintech, Cybersecurity, Rare Earths, Data Centers, plus the seeded Nuclear (NRI) list. Add/remove tickers, toggle indicators, click Chart to expand. |
-| **Companies** | The 20-ish index constituents specifically — deeper per-company view with thesis and metrics. Multi-stock compare tool at the top. |
-| **Optimizer** | Portfolio weights that maximize Sharpe / minimize vol / equal-weight, at 15%/20%/25% max position sizes. |
+| **Dashboard** | Composite index chart + top movers + benchmarks (S&P 500, uranium ETF, nuclear ETF). Auto-refreshes intraday every 5 minutes while the tab is open. |
+| **Watchlists** | Named baskets for any vertical. One-click presets: Semiconductors, Defense & Aerospace, AI Infrastructure, Uranium & Fuel, Biotech, Clean Energy, Fintech, Cybersecurity, Rare Earths, Data Centers, Nuclear (NRI). Add/remove tickers, toggle indicators, chart on demand. |
+| **Companies** | The 20-ish index constituents specifically — per-company view with thesis and metrics. Multi-stock compare tool at the top. |
+| **Optimizer** | Portfolio weights that maximize Sharpe, minimize vol, or equal-weight, at 15%/20%/25% max position sizes. |
 | **Backtest** | Composite vs. benchmarks over your chosen range. |
-| **Updates** | Merged feed of catalysts (dated milestones) + sector news, sortable and filterable by ticker. |
-| **Pre-IPO** | Watch list of private nuclear names — X-Energy, TerraPower, Kairos, Last Energy, Commonwealth Fusion, Helion, TAE, Seaborg, General Fusion. Status tags: private / filed / imminent. |
-| **Profile** | Your risk profile — feeds the optimizer and alert defaults. |
+| **Updates** | Merged feed of catalysts (dated milestones) + sector news. |
+| **Pre-IPO** | X-Energy, TerraPower, Kairos, Last Energy, Commonwealth Fusion, Helion, TAE, Seaborg, General Fusion. |
+| **Profile** | Risk profile — feeds the optimizer and alert defaults. |
 | **Alerts** | Rule engine. Add rules like "NVDA price > 200" or "OKLO % change from 2026-01-01 ≥ 25". Pushes to `data/alerts.json` in the repo via the GitHub API. |
 | **Methodology** | Index construction, editable constituent weights, add/remove constituents, and the Email digest schedule card. |
 
 ---
 
-## First-time setup (about 5 minutes)
+## First-time setup (about 5 minutes, all on websites)
 
-Only needed once. Everything after this happens on the site itself.
+Everything after this happens on the site itself.
 
-### 1. Publish the site (Terminal, one command)
-
-If you haven't already published:
+### 1. Publish the site (one Terminal command)
 
 ```bash
 bash ~/Documents/NRI/publish.sh
 ```
 
-This rebuilds the HTML and pushes to GitHub. GitHub Pages redeploys within
-~1 minute.
+Turn on Pages if you haven't: repo → **Settings → Pages → Deploy from branch → main → /(root)**.
 
-Make sure Pages is turned on for the repo: **Settings → Pages → Deploy from
-branch → main → /(root)**.
-
-### 2. Make a Gmail App Password (5 minutes on a Google page)
+### 2. Make a Gmail App Password
 
 Go to <https://myaccount.google.com/apppasswords>. You need 2-Step
-Verification turned on first (Google walks you through it if not).
+Verification turned on first (Google walks you through it if not). Create
+an app password called "NRI" and copy the 16-character code.
 
-Create an app password called "NRI". Copy the 16-character code — you
-won't see it again.
+### 3. Add it as a repo secret
 
-### 3. Add it as a repo secret (30 seconds on a GitHub page)
-
-Go to `github.com/<you>/<repo>/settings/secrets/actions/new`:
+Open `github.com/<you>/<repo>/settings/secrets/actions/new`:
 
 - **Name:** `GMAIL_APP_PASSWORD`
-- **Secret:** the 16-character code you just copied
+- **Secret:** the 16-character code
 
-### 4. Generate a GitHub Personal Access Token (2 minutes on a GitHub page)
+### 4. Generate a GitHub Personal Access Token
 
-Go to
-<https://github.com/settings/tokens/new?description=NRI+site&scopes=repo,workflow>.
-The scopes are pre-selected — just click **Generate token** and copy it.
+<https://github.com/settings/tokens/new?description=NRI+site&scopes=repo,workflow>
 
-### 5. Enter it in the site (30 seconds)
+Scopes come pre-selected — just click **Generate token** and copy it.
 
-Open your published site → **Methodology** tab → **Email digest schedule**
-card → paste your Gmail address, the token, pick a cadence (daily / weekly
-/ monthly / quarterly / yearly), click **Save & enable**.
+### 5. Enter everything in the site
 
-Done. The site commits the workflow and Python send script into your repo
-automatically. The next scheduled run will send you a test digest.
+Open your Pages URL → **Methodology** tab → **Email digest schedule** card.
+Paste your Gmail address, the token, pick a cadence, click **Save & enable**.
+
+The site commits the workflow and Python send script into your repo
+automatically. The next scheduled run sends you a test digest.
 
 ---
 
@@ -82,30 +73,24 @@ automatically. The next scheduled run will send you a test digest.
 
 **Watchlists tab** → dropdown at the top shows your lists.
 
-- **Clone a preset:** pick from Semiconductors / Defense / AI Infrastructure
-  / etc, click **+ Clone preset**. It becomes your active list.
-- **Start blank:** type a name in the "Blank list name" box, click **+ Blank**.
-- **Add a ticker:** type it in the "Add ticker" box, press Enter or click **+ Add**.
-- **Toggle indicators:** the checkboxes (SMA 20/50/200, EMA 20, Bollinger,
-  RSI, MACD, Volume) apply to charts opened from this list.
+- **Clone a preset:** pick from the dropdown, click **+ Clone preset**.
+- **Start blank:** type a name, click **+ Blank**.
+- **Add a ticker:** type it, press Enter or click **+ Add**.
+- **Toggle indicators:** SMA 20/50/200, EMA 20, Bollinger, RSI, MACD, Volume — checkboxes apply to charts opened from this list.
 - **Chart a ticker:** click the **Chart** button on any row.
 
-Everything persists in your browser via `localStorage`. To make the same
-watchlists visible to the alerts engine on the server, click **Push to
-GitHub** on the Alerts tab (writes to `data/watchlists.json`).
+Everything persists in your browser via `localStorage`. Click **Push to
+GitHub** on the Alerts tab to mirror your watchlists to
+`data/watchlists.json` so the server-side alert engine can see them.
 
 ### Alerts
 
-**Alerts tab** → three sections:
+**Alerts tab** — three sections.
 
 **Notification channels** — Gmail address (primary) and optionally a phone
-number + carrier for SMS via free email-to-SMS gateway (Verizon, AT&T,
-T-Mobile, US Cellular, Cricket, Metro, Boost, Google Fi).
+number + carrier for SMS via free email-to-SMS gateway.
 
-**Rules** — pick a ticker (any ticker in any of your watchlists shows up
-in the dropdown), pick a rule type, fill in the args, click **+ Add rule**.
-
-Rule types:
+**Rules** — pick a ticker, pick a rule type, fill in args, **+ Add rule**:
 
 | Rule | Fires when |
 |---|---|
@@ -121,15 +106,14 @@ Rule types:
 | MACD cross ↓ signal | Bearish momentum shift |
 | Volume spike | Today's volume ≥ multiplier × 20-day avg |
 
-Click **Push to GitHub** after any change. Your rules become live on the
-next scheduled workflow run.
+Click **Push to GitHub** after any change to make rules live in the workflow.
 
-### Email digest schedule
+### Digest schedule
 
 **Methodology tab → Email digest schedule** — cadence picker for the
 catalyst / pre-IPO summary email (daily / weekly / monthly / quarterly /
-yearly). Alerts run separately at 15-min intervals during market hours
-and don't depend on this setting.
+yearly). Independent from alerts, which run at 15-min intervals during
+market hours regardless of digest cadence.
 
 ---
 
@@ -138,13 +122,12 @@ and don't depend on this setting.
 Two crons live in `.github/workflows/nri-email.yml`:
 
 - `*/15 13-20 * * 1-5` — every 15 minutes on weekdays during US market
-  hours (covers 9:30 AM–4:00 PM ET across both DST windows). Evaluates
-  every enabled alert rule against fresh Yahoo 5-minute bars.
-- `0 8 * * *` — 08:00 UTC daily. Sends the catalyst digest if today
-  matches your cadence.
+  hours. Pulls fresh Yahoo 5-minute bars, evaluates every enabled rule,
+  emails you (+ SMS-cc) for any new fires.
+- `0 8 * * *` — 08:00 UTC daily digest.
 
-Both runs write to `data/alerts_state.json` (dedup ledger) and commit it
-back to the repo so the same event doesn't re-alert tomorrow.
+Both runs commit `data/alerts_state.json` (dedup ledger) back to the repo
+so the same event doesn't re-alert tomorrow.
 
 **Typical alert latency: 8–10 minutes.**
 
@@ -152,23 +135,13 @@ back to the repo so the same event doesn't re-alert tomorrow.
 
 ## Publishing updates
 
-Every time the build script or data changes, run:
-
 ```bash
-bash ~/Documents/NRI/publish.sh
+bash ~/Documents/NRI/publish.sh                        # default commit msg
+bash ~/Documents/NRI/publish.sh "Custom commit here"   # or a specific one
 ```
 
-Optional commit message:
-
-```bash
-bash ~/Documents/NRI/publish.sh "Add TerraPower position, tighten weights"
-```
-
-That command pulls the latest `build_static_site.py` from the Claude
-scratchpad (if newer), rebuilds `Nuclear-Renaissance-Index.html`, commits
-everything, and pushes to `origin/main`. Pages redeploys in ~1 minute.
-
-After a push, hard-refresh (⌘-Shift-R) to bypass browser cache.
+The script rebuilds the HTML, commits changes, and pushes. Pages redeploys
+in ~1 minute. Hard-refresh (⌘-Shift-R) to bypass browser cache.
 
 ---
 
@@ -177,18 +150,16 @@ After a push, hard-refresh (⌘-Shift-R) to bypass browser cache.
 ```
 NRI/
 ├── README.md                              — this file
-├── UPDATE_GUIDE.md                        — step-by-step for each update
+├── UPDATE_GUIDE.md                        — per-update walkthrough
 ├── WHATS_NEXT.md                          — honest scope vs. TradeVision
-├── DAILY_EMAIL_SETUP.md                   — legacy launchd-based email setup
 ├── build_static_site.py                   — the build script
 ├── publish.sh                             — one-shot rebuild + git push
 ├── refresh.command / refresh.bat          — double-click rebuild helpers
-├── setup_email.sh                         — legacy local-cron installer
-├── daily_email.py                         — legacy local-cron sender
-├── com.nri.daily.plist                    — legacy launchd plist
-├── Nuclear-Renaissance-Index.html         — the built site (published)
+├── index.html                             — the built site (Pages root)
+├── Nuclear-Renaissance-Index.html         — legacy copy of same file
+├── .nojekyll                              — tells Pages to skip Jekyll
 ├── data/
-│   ├── constituents.json                  — the index constituents
+│   ├── constituents.json                  — index constituents
 │   ├── catalysts.json                     — dated catalyst calendar
 │   ├── pre_ipo.json                       — private-company watchlist
 │   ├── watchlists.json                    — pushed from the site
@@ -201,58 +172,56 @@ NRI/
     └── maybe_send_email.py                — evaluates alerts + sends
 ```
 
+Legacy local-cron path (kept for reference, not required):
+`setup_email.sh`, `daily_email.py`, `com.nri.daily.plist`,
+`DAILY_EMAIL_SETUP.md`.
+
 ---
 
 ## Troubleshooting
 
-**"Site is not updating."**
-Most common cause: browser cache. Hard-refresh (⌘-Shift-R). If still
-stale, check the **Actions** tab on GitHub — the "pages build and
-deployment" workflow should show a green check within a minute of your
-push. If it hasn't run, make sure Pages is enabled on the repo.
+**Site isn't updating.**
+Hard-refresh (⌘-Shift-R). Check **Actions** tab on GitHub — the "pages
+build and deployment" workflow should have a green check within a minute
+of your push. If it didn't run, make sure Pages is enabled.
 
 **Prices are stale in the header bar.**
-Click the **Test proxies** button. If all proxies say FAIL, you're
-probably behind an ad-blocker (uBlock, Brave Shields) that blocks known
-CORS-proxy hostnames — allowlist `corsproxy.io`, `r.jina.ai`,
-`api.allorigins.win`. If some proxies pass, click **Reset state** and
-then **↻ Refresh**.
+Click **Test proxies** in the live bar. If all show FAIL, an ad-blocker
+(uBlock, Brave Shields) is probably blocking known CORS-proxy hostnames.
+Allowlist `corsproxy.io`, `r.jina.ai`, `api.allorigins.win`. If some pass,
+click **Reset state** then **↻ Refresh**.
 
 **Alert workflow isn't running.**
-Check `github.com/<you>/<repo>/actions`. If the workflow file was recently
-added, GitHub sometimes takes a few minutes to register the cron. You can
-also click **Run workflow** on the workflow page to trigger a manual test.
+Check `github.com/<you>/<repo>/actions`. If the workflow was just added,
+GitHub can take a few minutes to register the cron. Click **Run workflow**
+on the workflow page for a manual test.
 
-**"GMAIL_APP_PASSWORD is missing."**
-You skipped step 3 of first-time setup. Add the secret at
-`github.com/<you>/<repo>/settings/secrets/actions/new`.
+**"GMAIL_APP_PASSWORD is missing" in the workflow log.**
+You skipped step 3 of first-time setup — add the secret.
 
-**"Save & enable" fails with a 403.**
+**"Save & enable" fails with 403.**
 Your GitHub PAT is missing the `workflow` scope. Regenerate at
 <https://github.com/settings/tokens/new?description=NRI+site&scopes=repo,workflow>.
 
 **SMS isn't landing.**
-Free carrier email-to-SMS gateways are unreliable — carriers throttle or
-drop them. To fix: upgrade to Twilio (~$2/month + $0.008/message). See
-`WHATS_NEXT.md` for the ~20-line code change.
+Free carrier email-to-SMS gateways are unreliable. To fix reliably:
+Twilio (~$2/month + $0.008/message). See `WHATS_NEXT.md`.
 
 **A ticker isn't showing intraday data.**
 Yahoo doesn't publish intraday for every ticker (pre-IPOs, low-volume
-ADRs, foreign listings). Those fall back to daily bars automatically —
-alerts on them are end-of-day.
+ADRs, foreign listings). Those fall back to daily bars.
 
 ---
 
 ## Data sources
 
 - **Historical daily bars:** Stooq CSV, falling back to Yahoo Finance JSON.
-- **Intraday bars:** Yahoo Finance 5-minute JSON (server-side and
-  client-side, no API key).
+- **Intraday bars:** Yahoo Finance 5-minute JSON (server-side + client-side, no key).
 - **Static reference data:** hand-curated JSON files under `data/`.
 
 None of this requires an API key. If free proxies get throttled, you can
 deploy your own Cloudflare Worker (see the auto-generated
-`cloudflare-worker.js` — instructions inside).
+`cloudflare-worker.js`).
 
 ---
 
@@ -263,14 +232,12 @@ Full breakdown in `WHATS_NEXT.md`. Short version:
 - Not tick-level real-time — 8–10 min latency floor without a paid feed
 - Not a screener — shows what you put in your watchlists
 - Not an order-routing platform — no broker integration
-- Not multi-user — settings live in your browser + your repo, single seat
-
-If any of those become blocking, the doc has concrete upgrade paths.
+- Not multi-user — settings live in your browser + your repo
 
 ---
 
 ## License / attribution
 
-Research and analytics only. Nothing here is investment advice. All prices
-are sourced from public feeds and can be delayed, missing, or incorrect.
+Research and analytics only. Nothing here is investment advice. Prices are
+sourced from public feeds and can be delayed, missing, or incorrect.
 Verify anything actionable against your broker's data before trading.
