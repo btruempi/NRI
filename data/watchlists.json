@@ -1,0 +1,107 @@
+{
+  "active": "Space & Satellites",
+  "lists": {
+    "Nuclear (NRI)": {
+      "name": "Nuclear (NRI)",
+      "tickers": [
+        "CEG",
+        "VST",
+        "GEV",
+        "CCJ",
+        "LEU",
+        "ASPI",
+        "NUCL",
+        "BWXT",
+        "OKLO",
+        "SMR",
+        "NNE",
+        "IMSR",
+        "RYCEY",
+        "MIR",
+        "CDRE"
+      ],
+      "indicators": {
+        "sma20": true,
+        "sma50": false,
+        "sma200": false,
+        "ema20": false,
+        "bb": false,
+        "rsi": true,
+        "macd": false,
+        "vol": true
+      },
+      "note": "Seeded from the NRI constituents. Edit freely."
+    },
+    "Neuroscience": {
+      "name": "Neuroscience",
+      "tickers": [
+        "NERV",
+        "NMTC",
+        "NPCE",
+        "JUNS"
+      ],
+      "indicators": {
+        "sma20": true,
+        "sma50": true,
+        "sma200": false,
+        "ema20": false,
+        "bb": false,
+        "rsi": true,
+        "macd": false,
+        "vol": true
+      },
+      "note": "Cloned from preset."
+    },
+    "Space & Satellites": {
+      "name": "Space & Satellites",
+      "tickers": [
+        "RKLB",
+        "LMT",
+        "BA",
+        "NOC",
+        "IRDM",
+        "MAXR",
+        "VSAT",
+        "ASTS",
+        "PL"
+      ],
+      "indicators": {
+        "sma20": true,
+        "sma50": true,
+        "sma200": false,
+        "ema20": false,
+        "bb": false,
+        "rsi": true,
+        "macd": false,
+        "vol": true
+      },
+      "note": "Loaded from preset: Launch, satellites, space services. — see the source note at the bottom of this page."
+    },
+    "Neuroscience & Neurotech": {
+      "name": "Neuroscience & Neurotech",
+      "tickers": [
+        "BIIB",
+        "LLY",
+        "SAVA",
+        "ACAD",
+        "AXSM",
+        "INCY",
+        "IONS",
+        "SGMO",
+        "NBIX",
+        "INTC"
+      ],
+      "indicators": {
+        "sma20": true,
+        "sma50": true,
+        "sma200": false,
+        "ema20": false,
+        "bb": false,
+        "rsi": true,
+        "macd": false,
+        "vol": true
+      },
+      "note": "Loaded from preset: Alzheimer's, depression, neurodegeneration + brain-computer interfaces. — see the source note at the bottom of this page."
+    }
+  }
+}
