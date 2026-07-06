@@ -1,0 +1,53 @@
+{
+  "channels": {
+    "email": "bentruempi2@gmail.com",
+    "sms_phone": "",
+    "sms_carrier": ""
+  },
+  "rules": [
+    {
+      "id": "a_knws0lxi",
+      "enabled": true,
+      "ticker": "ASPI",
+      "type": "volume_spike",
+      "args": {
+        "multiplier": "2"
+      },
+      "created": "2026-07-06T18:48:09.778Z",
+      "last_fired": null
+    },
+    {
+      "id": "a_pamats2x",
+      "enabled": true,
+      "ticker": "BWXT",
+      "type": "volume_spike",
+      "args": {
+        "multiplier": "1.5"
+      },
+      "created": "2026-07-06T18:49:07.411Z",
+      "last_fired": null
+    },
+    {
+      "id": "a_njlfndd4",
+      "enabled": true,
+      "ticker": "LEU",
+      "type": "volume_spike",
+      "args": {
+        "multiplier": "2"
+      },
+      "created": "2026-07-06T18:49:35.914Z",
+      "last_fired": null
+    },
+    {
+      "id": "a_qnp2zy99",
+      "enabled": true,
+      "ticker": "RYCEY",
+      "type": "price_above",
+      "args": {
+        "value": "20.00"
+      },
+      "created": "2026-07-06T19:20:49.052Z",
+      "last_fired": null
+    }
+  ]
+}
